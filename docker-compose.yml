@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql:8.0
+    container_name: database
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydb
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - app-network
+
+  backend:
+    image: waleedansarii/cicd-backend:latest
+    build: 
+      context: ./backend
+    container_name: backend
+    ports:
+      - "8081:8080"
+    depends_on:
+      - database
+    networks:
+      - app-network
+
+  frontend:
+    image: waleedansarii/cicd-frontend:latest
+    build: 
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db-data:

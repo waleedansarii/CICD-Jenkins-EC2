@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 24px;
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus {
+            border-color: #4CAF50;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 14px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(2px);
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #4CAF50;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Employee Registration</h1>
+
+        <form id="employeeForm">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" placeholder="John Doe" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="john@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="designation">Designation</label>
+                <input type="text" id="designation" placeholder="Software Engineer" required>
+            </div>
+
+            <button type="submit">Submit Registration</button>
+        </form>
+
+        <h2 id="result"></h2>
+    </div>
+
+    <script>
+        document.getElementById("employeeForm")
+            .addEventListener("submit", async function(event) {
+                event.preventDefault();
+                
+                const submitBtn = event.target.querySelector('button[type="submit"]');
+                submitBtn.innerText = "Submitting...";
+                submitBtn.disabled = true;
+
+                const data = {
+                    name: document.getElementById("name").value,
+                    email: document.getElementById("email").value,
+                    designation: document.getElementById("designation").value
+                };
+
+                try {
+                    const response = await fetch('/api', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await response.text();
+                    document.getElementById("result").innerHTML = result;
+                    document.getElementById("employeeForm").reset();
+                } catch (error) {
+                    document.getElementById("result").innerHTML = "Error saving employee.";
+                    document.getElementById("result").style.color = "#f44336";
+                } finally {
+                    submitBtn.innerText = "Submit Registration";
+                    submitBtn.disabled = false;
+                }
+            });
+    </script>
+
+</body>
+</html>
