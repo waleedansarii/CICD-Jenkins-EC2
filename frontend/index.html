@@ -4,163 +4,432 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Registration</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: rgba(255, 255, 255, 0.06);
+            --surface-hover: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-strong: rgba(255, 255, 255, 0.16);
+            --text: #f5f5f7;
+            --text-muted: #a1a1aa;
+            --accent: #8b5cf6;
+            --accent-2: #ec4899;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', sans-serif;
         }
 
         body {
-            background-color: #f4f7f6;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            color: #333;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Animated aurora/mesh gradient background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: -50%;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.35), transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.3), transparent 40%),
+                radial-gradient(circle at 50% 90%, rgba(6, 182, 212, 0.25), transparent 40%);
+            animation: aurora 20s ease-in-out infinite alternate;
+            z-index: -1;
+            filter: blur(40px);
+        }
+
+        @keyframes aurora {
+            0%   { transform: translate(0, 0) rotate(0deg); }
+            50%  { transform: translate(-5%, 5%) rotate(180deg); }
+            100% { transform: translate(5%, -5%) rotate(360deg); }
+        }
+
+        /* Grain texture overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+            opacity: 0.06;
+            pointer-events: none;
+            z-index: 1;
         }
 
         .container {
-            background-color: #ffffff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 400px;
+            max-width: 440px;
+            background: var(--surface);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow:
+                0 24px 48px -12px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            position: relative;
+            z-index: 2;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(139, 92, 246, 0.12);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #c4b5fd;
+            margin-bottom: 16px;
+            letter-spacing: 0.02em;
+        }
+
+        .badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
         }
 
         h1 {
-            text-align: center;
-            font-size: 24px;
-            margin-bottom: 24px;
-            color: #1a1a1a;
-            font-weight: 600;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
-            color: #555;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            letter-spacing: 0.01em;
         }
 
-        input[type="text"],
-        input[type="email"] {
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper svg {
+            position: absolute;
+            left: 14px;
+            width: 18px;
+            height: 18px;
+            color: var(--text-muted);
+            pointer-events: none;
+            transition: color 0.2s ease;
+        }
+
+        input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            padding: 13px 14px 13px 44px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            border-radius: 12px;
             font-size: 14px;
-            transition: all 0.3s ease;
+            font-family: inherit;
+            color: var(--text);
+            transition: all 0.2s ease;
         }
 
-        input[type="text"]:focus,
-        input[type="email"]:focus {
-            border-color: #4CAF50;
+        input::placeholder {
+            color: rgba(161, 161, 170, 0.6);
+        }
+
+        input:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-strong);
+        }
+
+        input:focus {
             outline: none;
-            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+            background: var(--surface-hover);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.12);
+        }
+
+        input:focus + .input-wrapper svg,
+        .input-wrapper:focus-within svg {
+            color: var(--accent);
         }
 
         button[type="submit"] {
             width: 100%;
             padding: 14px;
-            background-color: #4CAF50;
+            margin-top: 8px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 12px;
+            font-size: 14px;
             font-weight: 600;
+            font-family: inherit;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.1s ease;
-            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            letter-spacing: 0.01em;
         }
 
-        button[type="submit"]:hover {
-            background-color: #45a049;
+        button[type="submit"]::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent-2) 0%, var(--accent) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        button[type="submit"]:active {
-            transform: translateY(2px);
+        button[type="submit"] span {
+            position: relative;
+            z-index: 1;
+        }
+
+        button[type="submit"]:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 24px -8px rgba(139, 92, 246, 0.5);
+        }
+
+        button[type="submit"]:hover:not(:disabled)::before {
+            opacity: 1;
+        }
+
+        button[type="submit"]:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        button[type="submit"]:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         #result {
             margin-top: 20px;
-            text-align: center;
-            font-size: 14px;
-            color: #4CAF50;
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-size: 13px;
             font-weight: 500;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            line-height: 1.5;
+            animation: slideIn 0.3s ease;
+        }
+
+        #result.show {
+            display: flex;
+        }
+
+        #result.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            color: #6ee7b7;
+        }
+
+        #result.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            color: #fca5a5;
+        }
+
+        #result svg {
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .footer a {
+            color: #c4b5fd;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 28px 24px; }
+            h1 { font-size: 22px; }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Employee Registration</h1>
+        <div class="header">
+            <div class="badge">Secure Onboarding</div>
+            <h1>Employee Registration</h1>
+            <p class="subtitle">Join the team in just a few seconds.</p>
+        </div>
 
-        <form id="employeeForm">
+        <form id="employeeForm" novalidate>
             <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" placeholder="John Doe" required>
+                <label for="name">Full Name</label>
+                <div class="input-wrapper">
+                    <input type="text" id="name" placeholder="Jane Doe" required>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </div>
             </div>
 
             <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="john@example.com" required>
+                <label for="email">Work Email</label>
+                <div class="input-wrapper">
+                    <input type="email" id="email" placeholder="jane@company.com" required>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="designation">Designation</label>
-                <input type="text" id="designation" placeholder="Software Engineer" required>
+                <div class="input-wrapper">
+                    <input type="text" id="designation" placeholder="Senior Engineer" required>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                    </svg>
+                </div>
             </div>
 
-            <button type="submit">Submit Registration</button>
+            <button type="submit" id="submitBtn">
+                <span>Create Account</span>
+            </button>
         </form>
 
-        <h2 id="result"></h2>
+        <div id="result"></div>
+
+        <div class="footer">
+            Already registered? <a href="#">Sign in</a>
+        </div>
     </div>
 
     <script>
-        document.getElementById("employeeForm")
-            .addEventListener("submit", async function(event) {
-                event.preventDefault();
-                
-                const submitBtn = event.target.querySelector('button[type="submit"]');
-                submitBtn.innerText = "Submitting...";
-                submitBtn.disabled = true;
+        const form = document.getElementById("employeeForm");
+        const submitBtn = document.getElementById("submitBtn");
+        const result = document.getElementById("result");
 
-                const data = {
-                    name: document.getElementById("name").value,
-                    email: document.getElementById("email").value,
-                    designation: document.getElementById("designation").value
-                };
+        const successIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+        const errorIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
 
-                try {
-                    const response = await fetch('/api', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(data)
-                    });
+        function showResult(message, type) {
+            result.className = `${type} show`;
+            result.innerHTML = `${type === 'success' ? successIcon : errorIcon}<span>${message}</span>`;
+            if (type === 'success') {
+                setTimeout(() => { result.classList.remove('show'); }, 4000);
+            }
+        }
 
-                    const result = await response.text();
-                    document.getElementById("result").innerHTML = result;
-                    document.getElementById("employeeForm").reset();
-                } catch (error) {
-                    document.getElementById("result").innerHTML = "Error saving employee.";
-                    document.getElementById("result").style.color = "#f44336";
-                } finally {
-                    submitBtn.innerText = "Submit Registration";
-                    submitBtn.disabled = false;
-                }
-            });
+        form.addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const originalText = submitBtn.querySelector('span').innerText;
+            submitBtn.innerHTML = `<div class="spinner"></div><span>Registering...</span>`;
+            submitBtn.disabled = true;
+
+            const data = {
+                name: document.getElementById("name").value.trim(),
+                email: document.getElementById("email").value.trim(),
+                designation: document.getElementById("designation").value.trim()
+            };
+
+            try {
+                const response = await fetch('/api', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) throw new Error('Server error');
+
+                const message = await response.text();
+                showResult(message || 'Account created successfully!', 'success');
+                form.reset();
+            } catch (error) {
+                showResult("Something went wrong. Please try again.", 'error');
+            } finally {
+                submitBtn.innerHTML = `<span>${originalText}</span>`;
+                submitBtn.disabled = false;
+            }
+        });
     </script>
 
 </body>
