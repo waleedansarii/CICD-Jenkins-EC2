@@ -1,322 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Neon-Carbon â€” High-Tech Dashboard UI</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Exo+2:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="tooplate-neon-carbon-style.css">
-<!--
-    Tooplate 2165 Neon Carbon
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
 
-    https://www.tooplate.com/view/2165-neon-carbon
+        body {
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
 
-    Free HTML CSS Template
--->
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 24px;
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus {
+            border-color: #4CAF50;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 14px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(2px);
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #4CAF50;
+            font-weight: 500;
+        }
+    </style>
 </head>
 <body>
 
-<!-- â•â•â•â•â•â•â• SIDEBAR â•â•â•â•â•â•â• -->
-<aside class="sidebar" aria-label="Main Navigation">
+    <div class="container">
+        <h1>Employee Registration</h1>
 
-  <!-- Brand Mark -->
-  <div class="sidebar-brand">
-    <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/>
-      <line x1="12" y1="2" x2="12" y2="22"/>
-    </svg>
-  </div>
+        <form id="employeeForm">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" placeholder="John Doe" required>
+            </div>
 
-  <!-- 8 Icon Utility Links -->
-  <nav class="sidebar-icons">
-    <a href="#hero" class="sidebar-icon active" aria-label="Dashboard" title="Dashboard">
-      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-    </a>
-    <a href="#cards" class="sidebar-icon" aria-label="Analytics" title="Analytics">
-      <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
-    </a>
-    <a href="#feed" class="sidebar-icon" aria-label="Feed" title="Live Feed">
-      <svg viewBox="0 0 24 24"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
-    </a>
-    <a href="#media" class="sidebar-icon" aria-label="Media" title="Media">
-      <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg>
-    </a>
-    <a href="#vault" class="sidebar-icon" aria-label="Vault" title="Vault">
-      <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-    </a>
-    <a href="#console" class="sidebar-icon" aria-label="Terminal" title="Console">
-      <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-    </a>
-    <a href="#" class="sidebar-icon" aria-label="Settings" title="Settings">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    </a>
-    <a href="#" class="sidebar-icon" aria-label="Profile" title="Profile">
-      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    </a>
-  </nav>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="john@example.com" required>
+            </div>
 
-  <!-- System Status -->
-  <div class="sidebar-status">
-    <div class="sidebar-status-label">System</div>
-    <div>
-      <span class="sidebar-status-dot"></span>
-      <span class="sidebar-status-text">ONLINE</span>
-    </div>
-    <div class="sidebar-status-uptime" id="uptimeCounter">99.97% uptime</div>
-  </div>
-</aside>
+            <div class="form-group">
+                <label for="designation">Designation</label>
+                <input type="text" id="designation" placeholder="Software Engineer" required>
+            </div>
 
-<!-- â•â•â•â•â•â•â• MOBILE â•â•â•â•â•â•â• -->
-<button class="hamburger" aria-label="Toggle Navigation"><span></span><span></span><span></span></button>
-<nav class="mobile-nav" aria-label="Mobile Navigation">
-  <a href="#hero">Dashboard</a>
-  <a href="#cards">Analytics</a>
-  <a href="#feed">Live Feed</a>
-  <a href="#media">Media</a>
-  <a href="#vault">Vault</a>
-  <a href="#console">Console</a>
-</nav>
+            <button type="submit">Submit Registration</button>
+        </form>
 
-<!-- â•â•â•â•â•â•â• MAIN STAGE â•â•â•â•â•â•â• -->
-<main class="main-stage" id="mainStage">
-
-  <!-- HUD HEADER -->
-  <header class="hud-header">
-    <div class="hud-left">
-      <div class="hud-title">Neon-Carbon</div>
-      <div class="hud-breadcrumb"><span>&gt;</span> dashboard <span>&gt;</span> overview</div>
-    </div>
-    <div class="hud-right">
-      <div class="hud-stat">CPU <span class="val">24%</span></div>
-      <div class="hud-divider"></div>
-      <div class="hud-stat">MEM <span class="val">6.2<small>GB</small></span></div>
-      <div class="hud-divider"></div>
-      <div class="hud-stat">LAT <span class="val">12<small>ms</small></span></div>
-      <div class="hud-divider"></div>
-      <div class="hud-stat">NODES <span class="val">47</span> <span class="warn">â–² 3</span></div>
-    </div>
-  </header>
-
-  <!-- â•â•â•â•â•â•â• HERO (THE CORE) â•â•â•â•â•â•â• -->
-  <section class="hero-core" id="hero">
-    <div class="hero-core-bg"></div>
-    <div class="hero-grid-lines"></div>
-    <div class="hero-content">
-      <div class="hero-tag">// Free HTML Template by Tooplate</div>
-      <h1 class="hero-glow-title">NEON<span>â€”</span>CARBON</h1>
-      <p class="hero-sub">High-performance dashboard UI &middot; Built with <strong>zero frameworks</strong></p>
-      <div class="hero-cta-row">
-        <button class="btn-primary" type="button">Launch System</button>
-        <button class="btn-ghost" type="button">View Docs</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- â•â•â•â•â•â•â• DASHBOARD GRID â•â•â•â•â•â•â• -->
-  <div class="dashboard">
-
-    <!-- SECTION 2: THE GRID (5 Asymmetric Cards) -->
-    <div class="card-grid-zone" id="cards">
-
-      <!-- Card 1: Tall left â€” Primary metric -->
-      <div class="dash-card tech-bracket reveal">
-        <div class="card-id"><span class="dot"></span> SYS-THROUGHPUT</div>
-        <div class="card-value">2.4M <span class="unit">req/s</span></div>
-        <div class="card-chart">
-          <div class="card-chart-bar" style="height:40%"></div>
-          <div class="card-chart-bar" style="height:55%"></div>
-          <div class="card-chart-bar" style="height:35%"></div>
-          <div class="card-chart-bar" style="height:70%"></div>
-          <div class="card-chart-bar" style="height:50%"></div>
-          <div class="card-chart-bar" style="height:85%"></div>
-          <div class="card-chart-bar" style="height:65%"></div>
-          <div class="card-chart-bar" style="height:90%"></div>
-          <div class="card-chart-bar" style="height:75%"></div>
-          <div class="card-chart-bar" style="height:60%"></div>
-          <div class="card-chart-bar" style="height:95%"></div>
-          <div class="card-chart-bar" style="height:80%"></div>
-        </div>
-        <div class="card-desc">Peak hourly throughput across all edge nodes. Current cycle shows 18% above baseline.</div>
-        <span class="card-tag up">+18.4%</span>
-      </div>
-
-      <!-- Card 2: Top center-left â€” Ring metric -->
-      <div class="dash-card tech-bracket reveal">
-        <div class="card-id"><span class="dot"></span> UPTIME</div>
-        <div class="card-ring">
-          <span class="card-ring-value">99.9</span>
-        </div>
-        <div class="card-desc" style="text-align:center;margin-top:14px;">System availability<br>last 90 days</div>
-      </div>
-
-      <!-- Card 3: Top wide right â€” Latency -->
-      <div class="dash-card tech-bracket reveal">
-        <div class="card-id"><span class="dot"></span> EDGE-LATENCY</div>
-        <div class="card-value">12 <span class="unit">ms</span></div>
-        <div class="card-desc">P95 response time across 47 global edge nodes. Frankfurt cluster reports elevated latency.</div>
-        <span class="card-tag neutral">â‰ˆ STABLE</span>
-      </div>
-
-      <!-- Card 4: Bottom center wide â€” Storage -->
-      <div class="dash-card tech-bracket reveal">
-        <div class="card-id"><span class="dot"></span> VAULT-STORAGE</div>
-        <div class="card-value">847 <span class="unit">TB</span></div>
-        <div class="card-desc">Distributed object storage consumed. Auto-tiering to cold storage at 900 TB threshold.</div>
-        <span class="card-tag down">92% CAPACITY</span>
-      </div>
-
-      <!-- Card 5: Bottom right â€” Alerts -->
-      <div class="dash-card tech-bracket reveal">
-        <div class="card-id"><span class="dot"></span> ALERTS</div>
-        <div class="card-value" style="color:var(--amber)">7</div>
-        <div class="card-desc">Active incidents requiring triage. 2 critical, 5 warning.</div>
-        <span class="card-tag neutral">TRIAGE</span>
-      </div>
+        <h2 id="result"></h2>
     </div>
 
-    <!-- SECTION 3: THE LIVE-FEED -->
-    <div class="live-feed-zone reveal" id="feed">
-      <div class="live-feed-header">
-        <div class="live-feed-title"><span class="live-dot"></span> Live Event Stream</div>
-        <div class="live-feed-count">148 events / last 60s</div>
-      </div>
-      <ul class="live-feed-list">
-        <li class="live-feed-item">
-          <span class="feed-time">09:42:18</span>
-          <span class="feed-event">Deployment completed <code>v4.7.2</code></span>
-          <span class="feed-source">ci/deploy</span>
-          <span class="feed-status ok">SUCCESS</span>
-        </li>
-        <li class="live-feed-item">
-          <span class="feed-time">09:41:55</span>
-          <span class="feed-event">SSL certificate renewed for <code>*.neoncarbon.io</code></span>
-          <span class="feed-source">certbot</span>
-          <span class="feed-status ok">RENEWED</span>
-        </li>
-        <li class="live-feed-item">
-          <span class="feed-time">09:41:32</span>
-          <span class="feed-event">Anomaly detected â€” Frankfurt node <code>FRA-07</code> latency spike</span>
-          <span class="feed-source">monitor/eu</span>
-          <span class="feed-status warn">WARNING</span>
-        </li>
-        <li class="live-feed-item">
-          <span class="feed-time">09:40:47</span>
-          <span class="feed-event">Auto-scaling triggered â€” <code>+3 pods</code> in us-east cluster</span>
-          <span class="feed-source">k8s/hpa</span>
-          <span class="feed-status ok">SCALED</span>
-        </li>
-        <li class="live-feed-item">
-          <span class="feed-time">09:39:58</span>
-          <span class="feed-event">Rate limit exceeded for API key <code>sk_***f9e2</code></span>
-          <span class="feed-source">gateway</span>
-          <span class="feed-status err">BLOCKED</span>
-        </li>
-        <li class="live-feed-item">
-          <span class="feed-time">09:38:14</span>
-          <span class="feed-event">Database failover test passed â€” <code>replica-03</code> promoted</span>
-          <span class="feed-source">rds/failover</span>
-          <span class="feed-status ok">VERIFIED</span>
-        </li>
-        <li class="live-feed-item">
-          <span class="feed-time">09:37:02</span>
-          <span class="feed-event">Storage tier migration â€” 12TB moved to <code>glacier</code></span>
-          <span class="feed-source">s3/lifecycle</span>
-          <span class="feed-status ok">COMPLETE</span>
-        </li>
-      </ul>
-    </div>
+    <script>
+        document.getElementById("employeeForm")
+            .addEventListener("submit", async function(event) {
+                event.preventDefault();
+                
+                const submitBtn = event.target.querySelector('button[type="submit"]');
+                submitBtn.innerText = "Submitting...";
+                submitBtn.disabled = true;
 
-    <!-- SECTION 4: MEDIA FRAGMENT -->
-    <div class="media-zone reveal" id="media">
-      <div class="media-label">Media Fragment â€” Reel 2026.03</div>
-      <div class="media-player tech-bracket">
-        <img src="images/neon-carbon-01.jpg" alt="Abstract technological environment" loading="lazy">
-        <div class="scan-overlay">
-          <div class="scan-line"></div>
-        </div>
-        <div class="scan-text"><span></span> SCANNING</div>
-        <div class="scan-coords">
-          LAT 48.8566Â° N<br>
-          LNG 2.3522Â° E<br>
-          ALT 35m
-        </div>
-        <div class="media-play-icon">
-          <svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg>
-        </div>
-      </div>
-      <div class="media-bar">
-        <div class="media-bar-fill"></div>
-      </div>
-      <div class="media-bar-meta">
-        <span>00:00 / 02:34</span>
-        <span>1080p &middot; H.265</span>
-      </div>
-    </div>
+                const data = {
+                    name: document.getElementById("name").value,
+                    email: document.getElementById("email").value,
+                    designation: document.getElementById("designation").value
+                };
 
-    <!-- SECTION 5: THE VAULT CARD (Flagship Download) -->
-    <div class="vault-zone reveal" id="vault">
-      <div class="vault-preview tech-bracket">
-        <img src="images/neon-carbon-02.jpg" alt="Technology workspace preview" loading="lazy">
-        <div class="vault-preview-badge">Flagship</div>
-      </div>
-      <div class="vault-info">
-        <div class="vault-meta-row">
-          <span class="vault-meta">v4.7.2</span>
-          <span class="vault-meta"><span class="sep">/</span> 2.4 MB</span>
-          <span class="vault-meta"><span class="sep">/</span> HTML + CSS + JS</span>
-          <span class="vault-meta"><span class="sep">/</span> MIT License</span>
-        </div>
-        <h3 class="vault-title">The Neon-Carbon<br>Dashboard Template</h3>
-        <p class="vault-desc">A high-tech, single-page dashboard UI built with zero dependencies. Carbon &amp; Cyan palette with HUD-style navigation, tech bracket decorators, and terminal-grade console.</p>
-        <div class="vault-tags">
-          <span class="vault-tag">Dashboard</span>
-          <span class="vault-tag">Dark Theme</span>
-          <span class="vault-tag">Responsive</span>
-          <span class="vault-tag">Single File</span>
-        </div>
-        <div class="vault-actions">
-          <button class="btn-primary" type="button">Download Free</button>
-          <button class="btn-ghost" type="button">Live Preview</button>
-        </div>
-      </div>
-    </div>
+                try {
+                    const response = await fetch('/api', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
 
-    <!-- SECTION 6: THE CONSOLE (Terminal Footer) -->
-    <div class="console-zone" id="console">
-      <div class="console-bar">
-        <span class="console-bar-dot r"></span>
-        <span class="console-bar-dot y"></span>
-        <span class="console-bar-dot g"></span>
-        <span class="console-bar-title">neon-carbon â€” bash â€” 80Ã—24</span>
-      </div>
-      <div class="console-body">
-        <div><span class="prompt">$</span> <span class="path">~/neon-carbon</span> node build.js <span class="flag">--production</span></div>
-        <div><span class="comment"># Compiling assets...</span></div>
-        <div><span class="output">âœ“ CSS minified â€” 12.4 KB (gzip: 3.1 KB)</span></div>
-        <div><span class="output">âœ“ JS bundled â€” 8.7 KB (gzip: 2.8 KB)</span></div>
-        <div><span class="output">âœ“ HTML optimized â€” single-file output</span></div>
-        <div><span class="success">BUILD COMPLETE</span> <span class="output">in 0.847s</span></div>
-        <div>&nbsp;</div>
-        <div><span class="prompt">$</span> <span class="path">~/neon-carbon</span> deploy <span class="flag">--edge</span> <span class="flag">--nodes=47</span></div>
-        <div><span class="output">Propagating to 47 edge nodes...</span></div>
-        <div><span class="success">DEPLOYED</span> <span class="output">â€” All nodes healthy</span></div>
-        <div>&nbsp;</div>
-        <div><span class="prompt">$</span> <span class="path">~/neon-carbon</span> status</div>
-        <div><span class="output">Uptime: 99.97% | Requests: 2.4M/s | Latency: 12ms p95</span></div>
-      </div>
-      <div class="console-input-row">
-        <span class="prompt-char">$</span>
-        <span class="console-cursor"></span>
-      </div>
-      <div class="console-attribution">
-        <a href="https://www.tooplate.com" target="_blank" rel="nofollow">Free HTML Template</a> by Tooplate &middot; Neon-Carbon v4.7.2
-      </div>
-    </div>
+                    const result = await response.text();
+                    document.getElementById("result").innerHTML = result;
+                    document.getElementById("employeeForm").reset();
+                } catch (error) {
+                    document.getElementById("result").innerHTML = "Error saving employee.";
+                    document.getElementById("result").style.color = "#f44336";
+                } finally {
+                    submitBtn.innerText = "Submit Registration";
+                    submitBtn.disabled = false;
+                }
+            });
+    </script>
 
-  </div><!-- /.dashboard -->
-
-</main>
-<script src="tooplate-neon-carbon-script.js"></script>
 </body>
 </html>
