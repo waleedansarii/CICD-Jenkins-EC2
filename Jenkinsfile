@@ -9,7 +9,7 @@ pipeline {
         // Variables for easy configuration
         DOCKER_CREDS_ID = 'dockerhub-creds'
         EC2_CREDS_ID = 'ec2-ssh-keys'
-        EC2_IP = '44.219.16.192'
+        EC2_IP = '16.112.208.192'
         EC2_USER = 'ubuntu'
         K8S_MANIFEST_DIR = 'k8s' // Directory in your repo containing frontend.yml, backend.yml, database.yml
     }
