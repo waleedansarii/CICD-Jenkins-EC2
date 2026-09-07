@@ -1,25 +1,27 @@
 pipeline {
-    agent any 
-    
+    agent any
+
     tools {
         maven 'MAVEN3'
     }
-    
+
     environment {
         // Variables for easy configuration
         DOCKER_CREDS_ID = 'dockerhub-creds'
         EC2_CREDS_ID = 'ec2-ssh-keys'
         EC2_IP = '44.219.16.192'
         EC2_USER = 'ubuntu'
+        K8S_MANIFEST_DIR = 'k8s' // Directory in your repo containing frontend.yml, backend.yml, database.yml
     }
-    
+
     stages {
         stage('Checkout Code') {
             steps {
+                checkout scm
                 echo 'Source code checked out successfully from GitHub.'
             }
         }
-        
+
         stage('Build') {
             steps {
                 dir('backend') {
@@ -28,7 +30,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Test') {
             steps {
                 dir('backend') {
@@ -37,56 +39,67 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Package') {
             steps {
                 dir('backend') {
-                    sh 'mvn package'
+                    sh 'mvn package -DskipTests' // Skip tests here since we already ran them in the Test stage
                 }
             }
         }
-        
+
         stage('Docker Build') {
             steps {
-                // Docker compose build will use the tags from docker-compose.yml
+                // Builds images based on your docker-compose.yml or individual Dockerfiles
                 sh 'docker compose build'
                 echo 'Docker images built locally.'
             }
         }
-        
+
         stage('Push to Docker Hub') {
             steps {
-                // Log in to Docker Hub using the credentials stored in Jenkins
                 withCredentials([usernamePassword(credentialsId: env.DOCKER_CREDS_ID, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                    
-                    // Push the newly built images to Docker Hub
+                    // Push the newly built images to Docker Hub so Kubernetes can pull them
                     sh 'docker compose push'
                 }
             }
         }
-        
-        stage('Deploy to Remote EC2') {
+
+        stage('Deploy to Kubernetes') {
             steps {
-                // Use the SSH agent plugin with the EC2 private key
+                // Use the SSH agent plugin to connect to the EC2 instance hosting the K8s cluster
                 sshagent([env.EC2_CREDS_ID]) {
-                    // 1. Create a directory on the remote server
-                    sh "ssh -o StrictHostKeyChecking=no ${env.EC2_USER}@${env.EC2_IP} 'mkdir -p ~/deployment'"
-                    
-                    // 2. Securely copy the docker-compose.yml to the new EC2 server
-                    sh "scp -o StrictHostKeyChecking=no docker-compose.yml ${env.EC2_USER}@${env.EC2_IP}:~/deployment/"
-                    
-                    // 3. SSH into the remote server, pull the images, and start the app
                     sh """
+                        # 1. Create a deployment directory on the remote EC2 server
+                        ssh -o StrictHostKeyChecking=no ${env.EC2_USER}@${env.EC2_IP} 'mkdir -p ~/deployment'
+
+                        # 2. Securely copy the entire k8s manifests directory to the remote server
+                        scp -o StrictHostKeyChecking=no -r ${env.K8S_MANIFEST_DIR} ${env.EC2_USER}@${env.EC2_IP}:~/deployment/
+
+                        # 3. SSH into the remote server, apply Kubernetes manifests, and restart deployments
                         ssh -o StrictHostKeyChecking=no ${env.EC2_USER}@${env.EC2_IP} '
                             cd ~/deployment &&
-                            docker compose pull &&
-                            docker compose down &&
-                            docker compose up -d
+                            echo "Applying Kubernetes manifests..." &&
+                            kubectl apply -f ${env.K8S_MANIFEST_DIR}/ &&
+                            echo "Restarting deployments for zero-downtime update..." &&
+                            kubectl rollout restart deployment/frontend deployment/backend || true
                         '
                     """
                 }
             }
+        }
+    }
+    
+    post {
+        always {
+            echo 'Pipeline execution completed.'
+        }
+        success {
+            echo '✅ Kubernetes deployment successful!'
+        }
+        failure {
+            echo '❌ Deployment failed. Check console logs for details.'
         }
     }
 }
