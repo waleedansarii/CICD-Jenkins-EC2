@@ -68,19 +68,18 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                // Use the SSH agent plugin to connect to the EC2 instance hosting the K8s cluster
                 sshagent([env.EC2_CREDS_ID]) {
                     sh """
-                        # 1. Create a deployment directory on the remote EC2 server
                         ssh -o StrictHostKeyChecking=no ${env.EC2_USER}@${env.EC2_IP} 'mkdir -p ~/deployment'
 
-                        # 2. Securely copy the entire k8s manifests directory to the remote server
                         scp -o StrictHostKeyChecking=no -r ${env.K8S_MANIFEST_DIR} ${env.EC2_USER}@${env.EC2_IP}:~/deployment/
+                        scp -o StrictHostKeyChecking=no -r monitoring ${env.EC2_USER}@${env.EC2_IP}:~/deployment/
 
-                        # 3. SSH into the remote server, apply Kubernetes manifests, and restart deployments
                         ssh -o StrictHostKeyChecking=no ${env.EC2_USER}@${env.EC2_IP} '
                             cd ~/deployment &&
-                            echo "Applying Kubernetes manifests..." &&
+                            echo "Deploying monitoring stack (Prometheus + Grafana)..." &&
+                            kubectl apply -f monitoring/ &&
+                            echo "Applying application manifests..." &&
                             kubectl apply -f ${env.K8S_MANIFEST_DIR}/ &&
                             echo "Restarting deployments for zero-downtime update..." &&
                             kubectl rollout restart deployment/frontend deployment/backend || true
@@ -89,17 +88,17 @@ pipeline {
                 }
             }
         }
-    }
+    }    
     
     post {
         always {
             echo 'Pipeline execution completed.'
         }
         success {
-            echo '✅ Kubernetes deployment successful!'
+            echo 'Kubernetes deployment successful!'
         }
         failure {
-            echo '❌ Deployment failed. Check console logs for details.'
+            echo 'Deployment failed. Check console logs for details.'
         }
     }
 }
